@@ -1,0 +1,4 @@
+repository "zombieGame@BeshoyBahaa@cloud"
+  path "/"
+    br "/main"
+    co "/main"
