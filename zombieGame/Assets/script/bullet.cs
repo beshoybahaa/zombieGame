@@ -15,5 +15,9 @@ public class bullet : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        if(collision.gameObject.CompareTag("Zombie")){
+            collision.gameObject.GetComponent<zombie>().TakeDamage(20);
+            Destroy(gameObject);
+        }
     }
 }
