@@ -23,16 +23,8 @@ public class zombie : MonoBehaviour
             animator.SetTrigger("DIE1");
             // Destroy(gameObject);
         }else{
-            //animator.SetTrigger("DAMAGE");
+            animator.SetTrigger("DAMAGE");
         }
         print("HP : "+HP);
-    }
-
-    private void Update() {
-        if (navAgent.velocity.magnitude > 0.1f){
-            animator.SetBool("isWalking",true);
-        }else{
-            animator.SetBool("isWalking", false);
-        }
     }
 }
