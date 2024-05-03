@@ -46,10 +46,17 @@ public class playerMovement : MonoBehaviour
         Vector3 move = transform.right * x + transform.forward * z;
 
         // acutal moving the player
-        controller.Move(move * speed * Time.deltaTime);
+        // controller.Move(move * speed * Time.deltaTime);
+        if(Input.GetButton("Fire3")){
+            controller.Move(move * speed*2 * Time.deltaTime);
+        }
+        else{
+            controller.Move(move * speed * Time.deltaTime);
+        }
+        print(speed);
 
         if(Input.GetButtonDown("Jump") && isGrounded){
-
+            print("jump");
             velocity.y = Mathf.Sqrt(jumHeight*-2f/gravity);
         }
 
