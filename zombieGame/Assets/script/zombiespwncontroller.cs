@@ -97,7 +97,8 @@ public class zombiespwncontroller : MonoBehaviour
         }
         if (end && currentWave > afterwave)
         {
-            winUI.gameObject.SetActive(true);
+            winUI.text="winner winner chicken dinner";
+            enabled=false;
         }
         deadCountUI.text = "score : " + deadCount;
         if(level == 1 && currentWave>afterwave){
