@@ -24,10 +24,12 @@ public class zombiespwncontroller : MonoBehaviour
 
     public TextMeshProUGUI currentWaveUI;
     public TextMeshProUGUI deadCountUI;
+    public TextMeshProUGUI winUI;
     static int deadCount=0;
     public int afterwave;
     // public List<GameObject> spwanList;
     static int level=1;
+    static bool end=false;
     List<Transform> wayPointsList = new List<Transform>();
     // Start is called before the first frame update
     void Start()
@@ -93,10 +95,15 @@ public class zombiespwncontroller : MonoBehaviour
         }else{
             coolDownCounter = waveCoolDown;
         }
+        if (end && currentWave > afterwave)
+        {
+            winUI.gameObject.SetActive(true);
+        }
         deadCountUI.text = "score : " + deadCount;
         if(level == 1 && currentWave>afterwave){
-            SceneManager.LoadScene(1);
-            level =2;
+            SceneManager.LoadScene(0);
+            level =0;
+            end=true;
         }
 
     }

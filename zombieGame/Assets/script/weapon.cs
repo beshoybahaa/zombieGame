@@ -14,11 +14,14 @@ public class weapon : MonoBehaviour
     public Transform bulletSpawn;
     public float bulletVelocity = 30;
     public float bulletPrefabLifeTime = 3f;
+    private AudioSource audioSource;
+    public AudioClip fireSF;
 
 
     private void Awake()
     {
         readyToShoot = true;
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -29,6 +32,7 @@ public class weapon : MonoBehaviour
         if (isShooting && readyToShoot)
         {
             FireWeapon();
+            audioSource.PlayOneShot(fireSF);
         }
     }
 

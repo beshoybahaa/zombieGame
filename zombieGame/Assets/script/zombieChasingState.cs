@@ -7,6 +7,7 @@ public class zombiechasingState : StateMachineBehaviour
 {
     Transform player;
     NavMeshAgent agent;
+    zombie zombieScript;
     
     public float chaseSpeed = 6f;
     public float stopChasingDistance = 21f;

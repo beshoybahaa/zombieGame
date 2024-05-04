@@ -10,7 +10,7 @@ public class zombie : MonoBehaviour
     private Animator animator;
     private NavMeshAgent navAgent;
     public bool isDead = false;
-    public AudioSource audioSource;
+    private AudioSource audioSource;
     public AudioClip attackSF;
     public AudioClip deadSF;
     // Start is called before the first frame update
@@ -18,8 +18,8 @@ public class zombie : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         navAgent = GetComponent<NavMeshAgent>();
+        audioSource = GetComponent<AudioSource>();
         audioSource.clip = attackSF;
-        audioSource.loop = true;
         audioSource.Play();
 
     }
@@ -27,26 +27,29 @@ public class zombie : MonoBehaviour
     public void TakeDamage(int damageAmount){
         HP -= damageAmount;
 
-        if(HP <= 0){
-            isDead=true;
-            transform.gameObject.tag = "Wall";
-            audioSource.PlayOneShot(deadSF);
-            animator.SetTrigger("DIE1");
-            Example();
-            audioSource.Stop();
-            
-            // Destroy(gameObject);
+        if(HP <= 1){
+            death();
         }
         else{
             
             animator.SetTrigger("DAMAGE");
         }
-        print("HP : "+HP);
     }
-    IEnumerator Example()
-    {
-        print(Time.time);
-        yield return new WaitForSeconds(4);
-        print(Time.time);
+
+    public void death(){
+        audioSource.Stop();
+        isDead = true;
+        transform.gameObject.tag = "Wall";
+        audioSource.clip = deadSF;
+        audioSource.PlayOneShot(deadSF);
+        int deathNum = Random.Range(1, 3);
+        animator.SetTrigger("DIE" + deathNum.ToString());
+        print("DIE" + deathNum.ToString());
+        wait();
+        print("disable");
+        enabled = false;
+    }
+    IEnumerator wait(){
+        yield return new WaitForSeconds(10);
     }
 }
