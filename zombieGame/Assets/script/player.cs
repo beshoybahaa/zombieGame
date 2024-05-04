@@ -11,6 +11,7 @@ public class player : MonoBehaviour
     public int HP = 100;
     public GameObject bloodyScreen;
     public TextMeshProUGUI textMesh;
+    public TextMeshProUGUI gameOverUI;
     private bool isDead = false;
     // Start is called before the first frame update
     void Start()
@@ -34,6 +35,7 @@ public class player : MonoBehaviour
             playerDead();
             textMesh.gameObject.SetActive(false);
             isDead = true;
+            gameOverUI.text = "Game Over";
         }
         else
         {
