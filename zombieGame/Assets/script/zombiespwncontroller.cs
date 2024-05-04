@@ -40,14 +40,18 @@ public class zombiespwncontroller : MonoBehaviour
 
     private void StartNextWav()
     {
-        currentZombiesAlive.Clear();
-        currentWave++;
-        currentWaveUI.text= "Wave : " + currentWave;
-        StartCoroutine(SpawnWave());
+
+        if(end){return;}else{
+            currentZombiesAlive.Clear();
+            currentWave++;
+            currentWaveUI.text= "Wave : " + currentWave;
+            StartCoroutine(SpawnWave());
+        }
     }
 
     private IEnumerator SpawnWave()
     {
+        if(end){}else{
         for (int i = 0; i<currentZombiePerWave; i++){
 
             Vector3 spawnOffeset = new Vector3(UnityEngine.Random.Range(-1f,1f),0f, UnityEngine.Random.Range(-1f, 1f));
@@ -66,12 +70,24 @@ public class zombiespwncontroller : MonoBehaviour
             currentZombiesAlive.Add(zombieScript);
 
             yield return new WaitForSeconds(spwanDelay);
-        }
+        }}
     }
 
     // Update is called once per frame
     void Update()
     {
+        deadCountUI.text = "score : " + deadCount;
+        if (level == 2 && currentWave > afterwave)
+        {
+            level = 0;
+            end = true;
+        }
+
+        if (level == 1 && currentWave > afterwave)
+        {
+            SceneManager.LoadScene(0);
+            level = 2;
+        }
         List<zombie> zombieToRemove = new List<zombie>();
         foreach(zombie zombie in currentZombiesAlive){
             if(zombie.isDead){
@@ -85,7 +101,7 @@ public class zombiespwncontroller : MonoBehaviour
         }
 
         zombieToRemove.Clear();
-        
+
         if(currentZombiesAlive.Count == 0 && inCoolDown == false){
             StartCoroutine(WaveCoolDown(waveCoolDown));
         }
@@ -99,13 +115,9 @@ public class zombiespwncontroller : MonoBehaviour
         {
             winUI.text="winner winner chicken dinner";
         }
-        deadCountUI.text = "score : " + deadCount;
-        if(level == 1 && currentWave>afterwave){
-            SceneManager.LoadScene(0);
-            level =0;
-            end=true;
-        }
-
+        print(end);
+        
+        
     }
 
     private IEnumerator WaveCoolDown(float waveCoolDown)
