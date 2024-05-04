@@ -85,9 +85,9 @@ public class zombiespwncontroller : MonoBehaviour
         }
 
         zombieToRemove.Clear();
-
+        
         if(currentZombiesAlive.Count == 0 && inCoolDown == false){
-            StartCoroutine(WaveCoolDown());
+            StartCoroutine(WaveCoolDown(waveCoolDown));
         }
 
         if(inCoolDown){
@@ -98,7 +98,6 @@ public class zombiespwncontroller : MonoBehaviour
         if (end && currentWave > afterwave)
         {
             winUI.text="winner winner chicken dinner";
-            enabled=false;
         }
         deadCountUI.text = "score : " + deadCount;
         if(level == 1 && currentWave>afterwave){
@@ -109,7 +108,7 @@ public class zombiespwncontroller : MonoBehaviour
 
     }
 
-    private IEnumerator WaveCoolDown()
+    private IEnumerator WaveCoolDown(float waveCoolDown)
     {
         inCoolDown = true;
         yield return new WaitForSeconds(waveCoolDown);

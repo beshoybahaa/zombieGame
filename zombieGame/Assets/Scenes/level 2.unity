@@ -1842,7 +1842,7 @@ MonoBehaviour:
   zombiePrefab: {fileID: 5435803720899636978, guid: 8e2479242c74e614d812cfc0219dec02, type: 3}
   currentWaveUI: {fileID: 1860176939}
   deadCountUI: {fileID: 1363069277}
-  winUI: {fileID: 0}
+  winUI: {fileID: 957801970}
   afterwave: 2
 --- !u!4 &1782289328
 Transform:
