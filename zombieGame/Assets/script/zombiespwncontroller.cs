@@ -25,11 +25,15 @@ public class zombiespwncontroller : MonoBehaviour
     public TextMeshProUGUI currentWaveUI;
     public TextMeshProUGUI deadCountUI;
     public TextMeshProUGUI winUI;
+    public TextMeshProUGUI toNextLevelUI;
+    public TextMeshProUGUI countingUI;
+    public TextMeshProUGUI toMenueUI;
     static int deadCount=0;
     public int afterwave;
     // public List<GameObject> spwanList;
     static int level=1;
     static bool end=false;
+    private bool finish = false;
     List<Transform> wayPointsList = new List<Transform>();
     // Start is called before the first frame update
     void Start()
@@ -40,13 +44,11 @@ public class zombiespwncontroller : MonoBehaviour
 
     private void StartNextWav()
     {
-
-        if(end){return;}else{
             currentZombiesAlive.Clear();
             currentWave++;
             currentWaveUI.text= "Wave : " + currentWave;
             StartCoroutine(SpawnWave());
-        }
+        
     }
 
     private IEnumerator SpawnWave()
@@ -77,17 +79,19 @@ public class zombiespwncontroller : MonoBehaviour
     void Update()
     {
         deadCountUI.text = "score : " + deadCount;
-        if (level == 2 && currentWave > afterwave)
+        if (end)
         {
             level = 0;
-            end = true;
+            SceneManager.LoadScene(2);
         }
-
+        print(currentWave);
         if (level == 1 && currentWave > afterwave)
         {
             SceneManager.LoadScene(0);
             level = 2;
         }
+        if (end && currentWave == afterwave)
+        {}else{
         List<zombie> zombieToRemove = new List<zombie>();
         foreach(zombie zombie in currentZombiesAlive){
             if(zombie.isDead){
@@ -108,16 +112,32 @@ public class zombiespwncontroller : MonoBehaviour
 
         if(inCoolDown){
             coolDownCounter -= Time.deltaTime;
+            if(currentWave ==afterwave&&level==1){
+            toNextLevelUI.gameObject.SetActive(true);
+            countingUI.gameObject.SetActive(true);
+            if (coolDownCounter > 0)
+                countingUI.text = (Mathf.FloorToInt(coolDownCounter % 60)).ToString();
+            else
+                countingUI.text = "0";
+                }
+            if(currentWave == afterwave && level == 2){
+                    toMenueUI.gameObject.SetActive(true);
+                    countingUI.gameObject.SetActive(true);
+                    if(coolDownCounter>0)
+                    countingUI.text = (Mathf.FloorToInt(coolDownCounter % 60)).ToString();
+                    else
+                    countingUI.text ="0";
+                        winUI.text = "winner winner chicken dinner";
+                    StartCoroutine("Finish");
+                }
         }else{
-            coolDownCounter = waveCoolDown;
+                coolDownCounter = waveCoolDown;
+        }}
+        if(finish){
+            Cursor.lockState = CursorLockMode.Locked;
+            SceneManager.LoadScene(2);
+            
         }
-        if (end && currentWave > afterwave)
-        {
-            winUI.text="winner winner chicken dinner";
-        }
-        print(end);
-        
-        
     }
 
     private IEnumerator WaveCoolDown(float waveCoolDown)
@@ -127,5 +147,10 @@ public class zombiespwncontroller : MonoBehaviour
         inCoolDown = false;
         currentZombiePerWave *=2;
         StartNextWav();
+    }
+
+    private IEnumerator Finish(){
+        yield return new WaitForSeconds(10);
+        finish=true;
     }
 }

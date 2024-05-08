@@ -3,25 +3,46 @@ using System.Collections;
 using System.Collections.Generic;
 using Palmmedia.ReportGenerator.Core.Parser.Analysis;
 using TMPro;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class player : MonoBehaviour
 {
     public int HP = 100;
     public GameObject bloodyScreen;
-    public TextMeshProUGUI textMesh;
+    public TextMeshProUGUI healthUI;
     public TextMeshProUGUI gameOverUI;
+    public TextMeshProUGUI countingUI;
+    public TextMeshProUGUI toMenueUI;
     private bool isDead = false;
+    private bool startCounting = false;
+    public float countTime;
     // Start is called before the first frame update
     void Start()
     {
-        textMesh.text= $"health : {HP}";
+        healthUI.text= $"health : {HP}";
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(startCounting){
+            if(isDead){
+                toMenueUI.gameObject.SetActive(true);
+            }
+            if (countTime >= 0)
+            {
+                countingUI.gameObject.SetActive(true);
+                countTime -= Time.deltaTime; // Update remaining time
+                countingUI.text= (Mathf.FloorToInt(countTime % 60)).ToString(); // Update the UI Text with remaining time
+            }
+            else
+            {
+                // Handle what happens when the timer reaches zero (e.g., trigger events)
+            }
+        }
         
     }
 
@@ -33,7 +54,7 @@ public class player : MonoBehaviour
         {
             print("player die");
             playerDead();
-            textMesh.gameObject.SetActive(false);
+            healthUI.gameObject.SetActive(false);
             isDead = true;
             gameOverUI.text = "Game Over";
         }
@@ -41,7 +62,7 @@ public class player : MonoBehaviour
         {
             print("player damage");
             StartCoroutine(bloodyScreenEffect());
-            textMesh.text = $"health : {HP}";
+            healthUI.text = $"health : {HP}";
         }
     }
 
@@ -50,6 +71,15 @@ public class player : MonoBehaviour
         GetComponent<mouseMovement>().enabled=false;
         GetComponent<playerMovement>().enabled=false;
         GetComponentInChildren<Animator>().enabled=true;
+        Cursor.lockState = CursorLockMode.None;
+        startCounting = true;
+        StartCoroutine(countDownTOMenu());
+        
+    }
+
+    private IEnumerator countDownTOMenu(){
+        yield return new WaitForSeconds(10);
+        SceneManager.LoadScene(2);
     }
 
     private IEnumerator bloodyScreenEffect()
@@ -91,7 +121,6 @@ public class player : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if(isDead == false){
-        print("collisotino");
         if(other.CompareTag("zombieHand")){
             TakeDamage(25);
         }}

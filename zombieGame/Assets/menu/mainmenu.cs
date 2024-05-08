@@ -6,8 +6,6 @@ using TMPro;
 
 public class mainmenu : MonoBehaviour
 {
-    public TMP_Text highscoreui;
-    string newgamescene = "samplescene";
     void Start()
     {
     }
@@ -18,10 +16,7 @@ public class mainmenu : MonoBehaviour
 
     public void exitapplication()
     {
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-
-#endif
+        print("exit");
+        Application.Quit();
     }
 }
